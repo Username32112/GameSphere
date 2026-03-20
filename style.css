@@ -1,0 +1,46 @@
+body{
+  margin:0;
+  font-family:'Segoe UI', sans-serif;
+  background: linear-gradient(135deg,#0f0f0f,#1a1a1a);
+  color:white;
+  text-align:center;
+}
+.screen{display:none;padding:20px;}
+.active{display:block;}
+button{padding:10px 20px;margin:5px;border:none;border-radius:10px;background:#00ffc3;cursor:pointer;font-weight:bold;transition:0.2s;}
+button:hover{transform:scale(1.05);}
+.homeBtn{position:absolute;top:10px;left:10px;}
+
+/* Home tiles */
+.tiles{display:flex;flex-wrap:wrap;justify-content:center;}
+.tile{
+  background:#181818;
+  color:white;
+  border-radius:20px;
+  width:180px;height:180px;
+  margin:15px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  box-shadow:0 0 10px #00ffc3;
+  transition:0.3s;
+  cursor:pointer;
+}
+.tile:hover{
+  background:#00ffc3;color:black;
+  transform:scale(1.1);
+  box-shadow:0 0 20px #00ffc3;
+}
+
+/* Game-specific styles */
+#reactionBox{width:300px;height:200px;margin:auto;background:red;display:flex;align-items:center;justify-content:center;border-radius:20px;font-size:24px;cursor:pointer;box-shadow:0 0 20px #ff0000;}
+#reactionBox:hover{transform:scale(1.05);}
+
+.grid{display:grid;grid-template-columns:repeat(4,80px);gap:15px;justify-content:center;margin-top:20px;}
+.card{width:80px;height:80px;background:#1f1f1f;border-radius:10px;display:flex;justify-content:center;align-items:center;font-size:30px;cursor:pointer;box-shadow:0 0 5px #00ffc3;}
+.flipped{background:#00ffc3;color:black;}
+.matched{background:#4caf50;color:white;cursor:default;box-shadow:none;}
+
+#aimBox{width:50px;height:50px;background:red;position:relative;margin:auto;cursor:pointer;border-radius:10px;}
+#snakeCanvas{background:#111;margin:auto;display:block;border-radius:10px;}
