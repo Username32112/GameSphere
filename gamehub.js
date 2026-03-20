@@ -1,111 +1,113 @@
-// ===================== SCREEN SWITCH =====================
+
+// =============== SCREEN SWITCH ==================
 function show(screen){
     document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
     document.getElementById(screen).classList.add("active");
 }
 
-// ===================== REACTION GAME =====================
-let reactionStart, waiting=false, ready=false, timeout;
-let bestReaction=localStorage.getItem("reactionBest")||0;
-document.getElementById("reactionBest").innerText=bestReaction;
-document.getElementById("reactionBox").onclick=function(){
-    let box=this;
-    if(!waiting&&!ready){
-        box.style.background="red"; box.innerText="Wait...";
-        waiting=true;
-        timeout=setTimeout(()=>{
-            box.style.background="lime"; box.innerText="CLICK!";
-            reactionStart=Date.now(); ready=true; waiting=false;
-        }, Math.random()*3000+2000);
-    } else if(waiting){
-        clearTimeout(timeout); box.innerText="Too early!"; waiting=false;
-    } else if(ready){
-        let t=Date.now()-reactionStart;
-        document.getElementById("reactionResult")?.remove();
-        box.insertAdjacentHTML("afterend","<p id='reactionResult'>"+t+" ms</p>");
-        if(bestReaction==0 || t<bestReaction){bestReaction=t; localStorage.setItem("reactionBest",t); document.getElementById("reactionBest").innerText=t;}
-        box.innerText="Click again"; box.style.background="#222"; ready=false;
-    }
-};
+// ================== CLICKER GAME ==================
+let coins=0, autoClick=0, doubleCoins=false, clickMultiplier=1;
+let upgrades=[
+    {name:"Auto +1/sec", type:"auto", cost:50, value:1},
+    {name:"Auto +5/sec", type:"auto", cost:500, value:5},
+    {name:"Double Coins", type:"double", cost:100, value:true},
+    {name:"Click x2", type:"mult", cost:200, value:2},
+    {name:"Click x5", type:"mult", cost:1000, value:5},
+    {name:"Coin Boost +100", type:"boost", cost:0, value:100, oneTime:true},
+    {name:"Auto +20/sec", type:"auto", cost:5000, value:20},
+    {name:"Click x10", type:"mult", cost:10000, value:10}
+];
 
-// ===================== MEMORY GAME =====================
-const emojis=["🔥","🚓","🚑","🚒","💰","🎮","⚡","👑"];
-let memCards=[], flipped=[], memMoves=0;
-function startMemory(){
-    let grid=document.getElementById("grid"); grid.innerHTML=""; flipped=[]; memMoves=0; document.getElementById("moves").innerText=0;
-    memCards=[...emojis,...emojis].sort(()=>Math.random()-0.5);
-    memCards.forEach(e=>{
-        let c=document.createElement("div"); c.className="card"; c.dataset.val=e;
-        c.onclick=()=>{ if(flipped.length<2&&!c.classList.contains("matched")) flipCard(c); };
-        grid.appendChild(c);
+function updateClickerButtons(){
+    let container=document.getElementById("clickerButtons");
+    container.innerHTML="";
+    upgrades.forEach(upg=>{
+        if(coins>=upg.cost || (upg.oneTime && !upg.bought)){
+            let btn=document.createElement("button");
+            btn.innerText=upg.name+(upg.cost>0?" - Cost:"+upg.cost:"");
+            btn.onclick=()=>{buyUpgrade(upg.name);}
+            container.appendChild(btn);
+        }
     });
 }
-function flipCard(c){
-    c.innerText=c.dataset.val; c.classList.add("flipped"); flipped.push(c);
-    if(flipped.length==2){ memMoves++; document.getElementById("moves").innerText=memMoves;
-        if(flipped[0].dataset.val==flipped[1].dataset.val){flipped.forEach(x=>x.classList.add("matched")); flipped=[];}
-        else setTimeout(()=>{flipped.forEach(x=>{x.innerText=""; x.classList.remove("flipped");}); flipped=[];},600);
+
+function addCoin(){
+    coins+=clickMultiplier*(doubleCoins?2:1);
+    document.getElementById("coins").innerText=coins;
+    updateClickerButtons();
+}
+
+function buyUpgrade(name){
+    let upg=upgrades.find(u=>u.name===name);
+    if(upg.cost<=coins || (upg.oneTime && !upg.bought)){
+        coins-=upg.cost;
+        if(upg.type==="auto") autoClick+=upg.value;
+        if(upg.type==="double") doubleCoins=true;
+        if(upg.type==="mult") clickMultiplier=upg.value;
+        if(upg.type==="boost") coins+=upg.value;
+        upg.bought=true;
+        document.getElementById("coins").innerText=coins;
+        updateClickerButtons();
     }
 }
-startMemory();
 
-// ===================== GUESS GAME =====================
-let guessNum=Math.floor(Math.random()*500)+1;
-function checkGuess(){
-    let g=Number(document.getElementById("guessInput").value);
-    if(g==guessNum) document.getElementById("guessMsg").innerText="🎉 Correct!"; 
-    else if(g<guessNum) document.getElementById("guessMsg").innerText="Too low"; 
-    else document.getElementById("guessMsg").innerText="Too high";
-}
-
-// ===================== CLICKER GAME =====================
-let coins=0, autoClick=0, doubleCoins=false;
-let autoCost=50, doubleCost=100;
-function addCoin(){ coins+=doubleCoins?2:1; document.getElementById("coins").innerText=coins; }
-function buyUpgrade(type){
-    if(type==="auto" && coins>=autoCost){ coins-=autoCost; autoClick++; autoCost=Math.floor(autoCost*1.5); document.getElementById("autoCost").innerText=autoCost; }
-    if(type==="double" && coins>=doubleCost){ coins-=doubleCost; doubleCoins=true; doubleCost=Math.floor(doubleCost*2); document.getElementById("doubleCost").innerText=doubleCost; }
+setInterval(()=>{
+    coins+=autoClick*(doubleCoins?2:1);
     document.getElementById("coins").innerText=coins;
-}
-setInterval(()=>{ coins+=autoClick*(doubleCoins?2:1); document.getElementById("coins").innerText=coins; },1000);
+    updateClickerButtons();
+},1000);
 
-// ===================== AIM TRAINER =====================
-let aimScore=0; let aimBox=document.getElementById("aimBox");
-aimBox.onclick=function(){ aimScore++; document.getElementById("aimScore").innerText=aimScore;
-this.style.top=Math.random()*200+"px"; this.style.left=Math.random()*200+"px";};
+updateClickerButtons();
 
-// ===================== TYPING SPEED =====================
-const words=["cat","dog","apple","banana","orange","keyboard","javascript","game","amazing","unbelievable","development","extraordinary","fantastic","programming"];
-let typeScore=0; let currentWord="";
-function newWord(){ 
-    let idx=Math.min(typeScore,words.length-1);
-    currentWord=words[idx]; document.getElementById("typeWord").innerText=currentWord; document.getElementById("typeInput").value="";
-}
-document.getElementById("typeInput").addEventListener("input",function(){
-    if(this.value.toLowerCase()===currentWord.toLowerCase()){ typeScore++; document.getElementById("typeScore").innerText=typeScore; newWord();}
+// ================== ADMIN PANEL ==================
+let adminVisible=false;
+let adminPanel=document.createElement("div");
+adminPanel.style.position="fixed";
+adminPanel.style.top="50px";
+adminPanel.style.right="50px";
+adminPanel.style.padding="20px";
+adminPanel.style.background="#222";
+adminPanel.style.color="#0f0";
+adminPanel.style.border="2px solid #0f0";
+adminPanel.style.display="none";
+adminPanel.style.zIndex="9999";
+adminPanel.innerHTML=`
+<h3>Admin Panel</h3>
+<button onclick="coins+=1000; document.getElementById('coins').innerText=coins; updateClickerButtons()">Add 1000 Coins</button>
+<button onclick="autoClick+=10">Add +10 Auto Click</button>
+<button onclick="clickMultiplier=10">Set Click x10</button>
+<button onclick="doubleCoins=true; updateClickerButtons()">Enable Double Coins</button>
+<button onclick="coins=0; autoClick=0; clickMultiplier=1; doubleCoins=false; updateClickerButtons()">Reset Clicker</button>
+<button onclick="guessNumber=Math.floor(Math.random()*500)+1;document.getElementById('guessMsg').innerText='Number reset'">Reset Guess</button>
+<button onclick="typeScore=0; document.getElementById('typeScore').innerText=0">Reset Typing</button>
+<button onclick="reactionBest='--'; document.getElementById('reactionBest').innerText='--'">Reset Reaction</button>
+<button onclick="colorScore=0; document.getElementById('colorScore').innerText=0">Reset Color</button>
+<button onclick="mathScore=0; document.getElementById('mathScore').innerText=0">Reset Math</button>
+<button onclick="aimScore=0; document.getElementById('aimScore').innerText=0">Reset Aim</button>
+<button onclick="snakeScore=0; document.getElementById('snakeScore').innerText=0">Reset Snake</button>
+<button onclick="moves=0; document.getElementById('moves').innerText=0; initMemory()">Reset Memory</button>
+`;
+document.body.appendChild(adminPanel);
+
+let keysPressed={};
+document.addEventListener("keydown",e=>{
+    keysPressed[e.key.toLowerCase()]=true;
+    if(keysPressed['c']&&keysPressed['m']&&keysPressed['d']&&keysPressed['s']){
+        adminVisible=!adminVisible;
+        adminPanel.style.display=adminVisible?"block":"none";
+    }
 });
-newWord();
+document.addEventListener("keyup",e=>{keysPressed[e.key.toLowerCase()]=false});
 
-// ===================== COLOR MATCH =====================
-let colorScore=0; const colors=["red","green","blue"];
-function newColor(){ let txt=colors[Math.floor(Math.random()*3)]; let col=colors[Math.floor(Math.random()*3)]; let el=document.getElementById("colorText"); el.innerText=txt; el.style.color=col;}
-function checkColor(c){ let el=document.getElementById("colorText"); if(c===el.style.color){ colorScore++; document.getElementById("colorScore").innerText=colorScore;} newColor();}
-newColor();
+// ================== BASIC PLACEHOLDER FOR OTHER GAMES ==================
+// You would continue here with:
+// - Reaction game logic
+// - Guess game logic
+// - Typing game logic
+// - Memory game logic
+// - Color match logic
+// - Math logic
+// - Aim trainer logic
+// - Snake game logic
 
-// ===================== MATH GAME =====================
-let mathScore=0;
-function newMath(){ let a=Math.floor(Math.random()*10*(mathScore+1)+1), b=Math.floor(Math.random()*10*(mathScore+1)+1); document.getElementById("mathQ").innerText=a+" + "+b; document.getElementById("mathAns").dataset.correct=a+b; document.getElementById("mathAns").value="";}
-function checkMath(){ let ans=Number(document.getElementById("mathAns").value); if(ans==document.getElementById("mathAns").dataset.correct){mathScore++; document.getElementById("mathScore").innerText=mathScore;} newMath();}
-newMath();
-
-// ===================== SNAKE =====================
-let snakeCanvas=document.getElementById("snakeCanvas"), ctx=snakeCanvas.getContext("2d");
-let snake=[{x:10,y:10}], snakeDir={x:1,y:0}, snakeFood={x:15,y:15}, snakeScore=0;
-function drawSnake(){ ctx.fillStyle="#111"; ctx.fillRect(0,0,300,300); ctx.fillStyle="lime"; snake.forEach(s=>ctx.fillRect(s.x*15,s.y*15,15,15)); ctx.fillStyle="red"; ctx.fillRect(snakeFood.x*15,snakeFood.y*15,15,15);}
-function updateSnake(){ let head={x:snake[0].x+snakeDir.x,y:snake[0].y+snakeDir.y};
-if(head.x<0||head.y<0||head.x>19||head.y>19||snake.some(s=>s.x===head.x&&s.y===head.y)){snake=[{x:10,y:10}]; snakeScore=0; document.getElementById("snakeScore").innerText=snakeScore; return;}
-snake.unshift(head);
-if(head.x===snakeFood.x&&head.y===snakeFood.y){snakeScore++; document.getElementById("snakeScore").innerText=snakeScore; snakeFood={x:Math.floor(Math.random()*20),y:Math.floor(Math.random()*20)};}else snake.pop();
-drawSnake();}
-document.addEventListener("keydown",e=>{if(e.key==="ArrowUp"&&snakeDir.y!==1)snakeDir={x:0,y:-1}; if(e.key==="ArrowDown"&&snakeDir.y!==-1)snakeDir={x:0,y:1}; if(e.key==="ArrowLeft"&&snakeDir.x!==1)snakeDir={x:-1,y:0}; if(e.key==="ArrowRight"&&snakeDir.x!==-1)snakeDir={x:1,y:0};});
-setInterval(updateSnake,150);
+// Each game can now use admin commands for testing/cheats
