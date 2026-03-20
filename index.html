@@ -7,98 +7,99 @@
 </head>
 <body>
 
-<!-- ===================== HOME ===================== -->
+<!-- HOME PAGE -->
 <div id="home" class="screen active">
     <h1>🎮 GameSphere</h1>
-    <p>Play 10 exciting games! Click a tile to start.</p>
+    <p>Welcome to the ultimate arcade! Click a tile to start a game.</p>
     <div class="tiles">
         <div class="tile" onclick="show('reaction')">
-            <div style="font-size:40px">⚡</div>
+            <div class="icon">⚡</div>
             <strong>Reaction</strong>
-            <small>Test your reflexes with color changes!</small>
+            <small>Test your reflexes!</small>
         </div>
         <div class="tile" onclick="show('memory')">
-            <div style="font-size:40px">🧠</div>
+            <div class="icon">🧠</div>
             <strong>Memory</strong>
-            <small>Match pairs and challenge your brain.</small>
+            <small>Match pairs fast!</small>
         </div>
         <div class="tile" onclick="show('guess')">
-            <div style="font-size:40px">🎲</div>
+            <div class="icon">🎲</div>
             <strong>Guess</strong>
-            <small>Guess the number 1–500!</small>
+            <small>1–500 challenge!</small>
         </div>
         <div class="tile" onclick="show('clicker')">
-            <div style="font-size:40px">💰</div>
+            <div class="icon">💰</div>
             <strong>Clicker</strong>
-            <small>Earn coins and buy upgrades!</small>
+            <small>Earn coins and upgrades!</small>
         </div>
         <div class="tile" onclick="show('aim')">
-            <div style="font-size:40px">🎯</div>
+            <div class="icon">🎯</div>
             <strong>Aim Trainer</strong>
-            <small>Click the moving target fast!</small>
+            <small>Hit the moving target!</small>
         </div>
         <div class="tile" onclick="show('typing')">
-            <div style="font-size:40px">⌨️</div>
+            <div class="icon">⌨️</div>
             <strong>Typing</strong>
-            <small>Type words quickly, words get longer.</small>
+            <small>Words get longer as you progress!</small>
         </div>
         <div class="tile" onclick="show('color')">
-            <div style="font-size:40px">🎨</div>
+            <div class="icon">🎨</div>
             <strong>Color Match</strong>
             <small>Pick the correct color!</small>
         </div>
         <div class="tile" onclick="show('math')">
-            <div style="font-size:40px">🔢</div>
+            <div class="icon">🔢</div>
             <strong>Math Challenge</strong>
-            <small>Answer equations and level up.</small>
+            <small>Answer equations quickly!</small>
         </div>
         <div class="tile" onclick="show('snake')">
-            <div style="font-size:40px">🐍</div>
+            <div class="icon">🐍</div>
             <strong>Snake</strong>
-            <small>Classic snake, eat and grow!</small>
+            <small>Eat, grow, avoid walls!</small>
         </div>
     </div>
 </div>
 
-<!-- ===================== GAME SCREENS ===================== -->
+<!-- REACTION GAME -->
 <div id="reaction" class="screen">
     <button class="homeBtn" onclick="show('home')">🏠 Home</button>
     <h2>⚡ Reaction Game</h2>
-    <p>Click the box as soon as it turns green. Test your reflexes!</p>
+    <p>Click the box as soon as it turns green!</p>
     <div id="reactionBox">Click to Start</div>
     <p>Best: <span id="reactionBest">--</span> ms</p>
 </div>
 
+<!-- MEMORY GAME -->
 <div id="memory" class="screen">
     <button class="homeBtn" onclick="show('home')">🏠 Home</button>
     <h2>🧠 Memory Game</h2>
-    <p>Flip the cards and match the pairs as fast as you can!</p>
+    <p>Flip the cards and match all pairs!</p>
     <p>Moves: <span id="moves">0</span></p>
     <div id="grid" class="grid"></div>
 </div>
 
+<!-- GUESS GAME -->
 <div id="guess" class="screen">
     <button class="homeBtn" onclick="show('home')">🏠 Home</button>
     <h2>🎲 Guess Game</h2>
-    <p>Guess a number between 1 and 500. Are you lucky?</p>
+    <p>Guess a number from 1 to 500!</p>
     <input id="guessInput" type="number" placeholder="Enter number">
     <br>
     <button onclick="checkGuess()">Guess</button>
     <p id="guessMsg"></p>
 </div>
 
+<!-- CLICKER GAME -->
 <div id="clicker" class="screen">
     <button class="homeBtn" onclick="show('home')">🏠 Home</button>
     <h2>💰 Clicker Game</h2>
-    <p>Click to earn coins and unlock upgrades!</p>
+    <p>Click to earn coins! Unlock upgrades as you go.</p>
     <p>Coins: <span id="coins">0</span></p>
-    <button onclick="addCoin()">Click me!</button>
-    <div id="clickerButtons">
-        <button onclick="buyUpgrade('auto')">Auto Click (+1/sec) - Cost: <span id="autoCost">50</span></button>
-        <button onclick="buyUpgrade('double')">Double Coins - Cost: <span id="doubleCost">100</span></button>
-    </div>
+    <button onclick="addCoin()">Click Me!</button>
+    <div id="clickerButtons"></div>
 </div>
 
+<!-- AIM TRAINER -->
 <div id="aim" class="screen">
     <button class="homeBtn" onclick="show('home')">🏠 Home</button>
     <h2>🎯 Aim Trainer</h2>
@@ -107,19 +108,21 @@
     <p>Score: <span id="aimScore">0</span></p>
 </div>
 
+<!-- TYPING GAME -->
 <div id="typing" class="screen">
     <button class="homeBtn" onclick="show('home')">🏠 Home</button>
-    <h2>⌨️ Typing Speed</h2>
+    <h2>⌨️ Typing Game</h2>
     <p>Type the words correctly. They get longer as you progress!</p>
     <p id="typeWord"></p>
     <input id="typeInput" type="text" placeholder="Type here">
     <p>Score: <span id="typeScore">0</span></p>
 </div>
 
+<!-- COLOR MATCH -->
 <div id="color" class="screen">
     <button class="homeBtn" onclick="show('home')">🏠 Home</button>
     <h2>🎨 Color Match</h2>
-    <p>Select the color that matches the text color!</p>
+    <p>Pick the correct color of the text!</p>
     <p id="colorText"></p>
     <button onclick="checkColor('red')">Red</button>
     <button onclick="checkColor('green')">Green</button>
@@ -127,21 +130,23 @@
     <p>Score: <span id="colorScore">0</span></p>
 </div>
 
+<!-- MATH CHALLENGE -->
 <div id="math" class="screen">
     <button class="homeBtn" onclick="show('home')">🏠 Home</button>
     <h2>🔢 Math Challenge</h2>
-    <p>Solve the equations to increase your score!</p>
+    <p>Solve equations quickly to increase your score!</p>
     <p id="mathQ"></p>
     <input id="mathAns" type="number" placeholder="Answer">
     <button onclick="checkMath()">Submit</button>
     <p>Score: <span id="mathScore">0</span></p>
 </div>
 
+<!-- SNAKE GAME -->
 <div id="snake" class="screen">
     <button class="homeBtn" onclick="show('home')">🏠 Home</button>
-    <h2>🐍 Snake Game</h2>
-    <p>Eat food, grow longer, and avoid hitting walls!</p>
-    <canvas id="snakeCanvas" width="300" height="300"></canvas>
+    <h2>🐍 Snake</h2>
+    <p>Eat food, grow, and avoid hitting walls!</p>
+    <canvas id="snakeCanvas" width="400" height="400"></canvas>
     <p>Score: <span id="snakeScore">0</span></p>
 </div>
 
