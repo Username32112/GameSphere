@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ryan's Ultimate Game Hub</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===================== HOME ===================== -->
+<div id="home" class="screen active">
+    <h1>🎮 Ryan's Ultimate Game Hub</h1>
+    <div class="tile" onclick="show('reaction')">⚡ Reaction<br><small>Test your reflexes</small></div>
+    <div class="tile" onclick="show('memory')">🧠 Memory<br><small>Match pairs</small></div>
+    <div class="tile" onclick="show('guess')">🎲 Guess<br><small>1 to 500</small></div>
+    <div class="tile" onclick="show('clicker')">💰 Clicker<br><small>Earn coins & upgrades</small></div>
+    <div class="tile" onclick="show('aim')">🎯 Aim Trainer<br><small>Click the moving target</small></div>
+    <div class="tile" onclick="show('typing')">⌨️ Typing<br><small>Words get longer</small></div>
+    <div class="tile" onclick="show('color')">🎨 Color Match<br><small>Match the color</small></div>
+    <div class="tile" onclick="show('math')">🔢 Math<br><small>Challenge your brain</small></div>
+    <div class="tile" onclick="show('snake')">🐍 Snake<br><small>Classic snake game</small></div>
+</div>
+
+<!-- ===================== OTHER SCREENS ===================== -->
+<div id="reaction" class="screen">
+    <button class="homeBtn" onclick="show('home')">🏠 Home</button>
+    <h2>⚡ Reaction Game</h2>
+    <div id="reactionBox">Click to Start</div>
+    <p>Best: <span id="reactionBest">--</span> ms</p>
+</div>
+
+<div id="memory" class="screen">
+    <button class="homeBtn" onclick="show('home')">🏠 Home</button>
+    <h2>🧠 Memory Game</h2>
+    <p>Moves: <span id="moves">0</span></p>
+    <div id="grid" class="grid"></div>
+</div>
+
+<div id="guess" class="screen">
+    <button class="homeBtn" onclick="show('home')">🏠 Home</button>
+    <h2>🎲 Guess Game (1-500)</h2>
+    <input id="guessInput" type="number" placeholder="Enter number">
+    <br>
+    <button onclick="checkGuess()">Guess</button>
+    <p id="guessMsg"></p>
+</div>
+
+<div id="clicker" class="screen">
+    <button class="homeBtn" onclick="show('home')">🏠 Home</button>
+    <h2>💰 Clicker Game</h2>
+    <p>Coins: <span id="coins">0</span></p>
+    <button onclick="addCoin()">Click me!</button>
+    <div id="clickerButtons">
+        <button onclick="buyUpgrade('auto')">Auto Click (+1/sec) - Cost: <span id="autoCost">50</span></button>
+        <button onclick="buyUpgrade('double')">Double Coins - Cost: <span id="doubleCost">100</span></button>
+    </div>
+</div>
+
+<div id="aim" class="screen">
+    <button class="homeBtn" onclick="show('home')">🏠 Home</button>
+    <h2>🎯 Aim Trainer</h2>
+    <p>Click the red box as fast as you can!</p>
+    <div id="aimBox"></div>
+    <p>Score: <span id="aimScore">0</span></p>
+</div>
+
+<div id="typing" class="screen">
+    <button class="homeBtn" onclick="show('home')">🏠 Home</button>
+    <h2>⌨️ Typing Speed</h2>
+    <p id="typeWord"></p>
+    <input id="typeInput" type="text" placeholder="Type here">
+    <p>Score: <span id="typeScore">0</span></p>
+</div>
+
+<div id="color" class="screen">
+    <button class="homeBtn" onclick="show('home')">🏠 Home</button>
+    <h2>🎨 Color Match</h2>
+    <p id="colorText"></p>
+    <button onclick="checkColor('red')">Red</button>
+    <button onclick="checkColor('green')">Green</button>
+    <button onclick="checkColor('blue')">Blue</button>
+    <p>Score: <span id="colorScore">0</span></p>
+</div>
+
+<div id="math" class="screen">
+    <button class="homeBtn" onclick="show('home')">🏠 Home</button>
+    <h2>🔢 Math Challenge</h2>
+    <p id="mathQ"></p>
+    <input id="mathAns" type="number" placeholder="Answer">
+    <button onclick="checkMath()">Submit</button>
+    <p>Score: <span id="mathScore">0</span></p>
+</div>
+
+<div id="snake" class="screen">
+    <button class="homeBtn" onclick="show('home')">🏠 Home</button>
+    <h2>🐍 Snake</h2>
+    <canvas id="snakeCanvas" width="300" height="300"></canvas>
+    <p>Score: <span id="snakeScore">0</span></p>
+</div>
+
+<script src="gamehub.js"></script>
+</body>
+</html>
