@@ -1,46 +1,164 @@
+/* GENERAL BODY */
 body{
-  margin:0;
-  font-family:'Segoe UI', sans-serif;
-  background: linear-gradient(135deg,#0f0f0f,#1a1a1a);
-  color:white;
-  text-align:center;
+    margin:0;
+    font-family:'Segoe UI', sans-serif;
+    background: linear-gradient(135deg,#0f0f0f,#1a1a1a);
+    color:white;
+    overflow:hidden;
+    text-align:center;
 }
-.screen{display:none;padding:20px;}
-.active{display:block;}
-button{padding:10px 20px;margin:5px;border:none;border-radius:10px;background:#00ffc3;cursor:pointer;font-weight:bold;transition:0.2s;}
-button:hover{transform:scale(1.05);}
-.homeBtn{position:absolute;top:10px;left:10px;}
 
-/* Home tiles */
-.tiles{display:flex;flex-wrap:wrap;justify-content:center;}
+/* SCREEN HANDLING */
+.screen{
+    display:none;
+    width:100vw;
+    height:100vh;
+    padding:40px;
+    box-sizing:border-box;
+}
+.active{display:block;}
+
+/* HOME PAGE TILES */
+h1{font-size:60px;margin-bottom:10px;text-shadow:0 0 20px #00ffc3;}
+.tiles{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    align-items:center;
+    gap:25px;
+    margin-top:20px;
+}
 .tile{
-  background:#181818;
-  color:white;
-  border-radius:20px;
-  width:180px;height:180px;
-  margin:15px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  box-shadow:0 0 10px #00ffc3;
-  transition:0.3s;
-  cursor:pointer;
+    background:#111;
+    width:200px;height:200px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    border-radius:25px;
+    box-shadow:0 0 15px #00ffc3;
+    transition:0.3s;
+    cursor:pointer;
+    font-size:20px;
 }
 .tile:hover{
-  background:#00ffc3;color:black;
-  transform:scale(1.1);
-  box-shadow:0 0 20px #00ffc3;
+    background:#00ffc3;
+    color:black;
+    transform:scale(1.1);
+    box-shadow:0 0 30px #00ffc3, 0 0 50px #0ff inset;
+}
+.icon{font-size:50px;margin-bottom:10px;}
+
+/* BUTTONS */
+button{
+    padding:12px 25px;
+    border:none;
+    border-radius:15px;
+    background:#00ffc3;
+    color:black;
+    font-weight:bold;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.2s;
+}
+button:hover{transform:scale(1.05);}
+.homeBtn{
+    position:absolute;
+    top:20px;
+    left:20px;
+    background:#ff0;
+    color:black;
 }
 
-/* Game-specific styles */
-#reactionBox{width:300px;height:200px;margin:auto;background:red;display:flex;align-items:center;justify-content:center;border-radius:20px;font-size:24px;cursor:pointer;box-shadow:0 0 20px #ff0000;}
+/* CLICKER */
+#clickerButtons{
+    margin-top:20px;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:15px;
+}
+#clickerButtons button{
+    background:#ff0080;
+    color:white;
+    font-weight:bold;
+}
+
+/* REACTION GAME */
+#reactionBox{
+    width:400px;height:300px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:20px;
+    font-size:32px;
+    background:red;
+    box-shadow:0 0 30px #ff0000;
+    cursor:pointer;
+    transition:0.3s;
+}
 #reactionBox:hover{transform:scale(1.05);}
 
-.grid{display:grid;grid-template-columns:repeat(4,80px);gap:15px;justify-content:center;margin-top:20px;}
-.card{width:80px;height:80px;background:#1f1f1f;border-radius:10px;display:flex;justify-content:center;align-items:center;font-size:30px;cursor:pointer;box-shadow:0 0 5px #00ffc3;}
-.flipped{background:#00ffc3;color:black;}
+/* MEMORY */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(4,100px);
+    gap:15px;
+    justify-content:center;
+    margin-top:30px;
+}
+.card{
+    width:100px;height:100px;
+    background:#1f1f1f;
+    border-radius:15px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:36px;
+    cursor:pointer;
+    box-shadow:0 0 5px #0ff;
+}
+.flipped{background:#0ff;color:black;}
 .matched{background:#4caf50;color:white;cursor:default;box-shadow:none;}
 
-#aimBox{width:50px;height:50px;background:red;position:relative;margin:auto;cursor:pointer;border-radius:10px;}
-#snakeCanvas{background:#111;margin:auto;display:block;border-radius:10px;}
+/* AIM */
+#aimBox{
+    width:60px;height:60px;
+    background:red;
+    position:relative;
+    margin:auto;
+    border-radius:15px;
+    box-shadow:0 0 20px red;
+    cursor:pointer;
+}
+
+/* TYPING */
+#typeWord{
+    font-size:36px;
+    margin:20px;
+    color:#ff0;
+}
+
+/* COLOR MATCH */
+#colorText{
+    font-size:48px;
+    margin:25px;
+    font-weight:bold;
+}
+
+/* MATH CHALLENGE */
+#mathQ{
+    font-size:40px;
+    margin:20px;
+    color:#0ff;
+}
+
+/* SNAKE */
+#snakeCanvas{
+    background:#111;
+    display:block;
+    margin:auto;
+    border-radius:20px;
+    box-shadow:0 0 30px #0ff inset;
+}
